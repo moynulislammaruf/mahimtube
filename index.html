@@ -1,0 +1,705 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+
+ <title>EarnApp Dashboard</title>
+ <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+ <script>
+  tailwind.config = {
+   theme: {
+    extend: {
+     colors: { primary: "#5B68FF", secondary: "#FF6B6B" },
+     borderRadius: {
+      none: "0px",
+      sm: "4px",
+      DEFAULT: "8px",
+      md: "12px",
+      lg: "16px",
+      xl: "20px",
+      "2xl": "24px",
+      "3xl": "32px",
+      full: "9999px",
+      button: "8px",
+     },
+    },
+   },
+  };
+ </script>
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+
+
+ <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+
+ <style>
+  :where([class^="ri-"])::before {
+   content: "\f3c2";
+  }
+
+  .gradient-bg {
+   background: linear-gradient(135deg, #F8F9FE 0%, #FFFFFF 100%);
+  }
+
+  .glass-effect {
+   backdrop-filter: blur(10px);
+   background: rgba(255, 255, 255, 0.9);
+  }
+
+  .glow-effect {
+   box-shadow: 0 0 20px rgba(91, 104, 255, 0.3);
+  }
+
+  .card-shadow {
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .pulse-animation {
+   animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+
+   0%,
+   100% {
+    transform: scale(1);
+   }
+
+   50% {
+    transform: scale(1.05);
+   }
+  }
+
+  .spin-animation {
+   animation: spin 3s linear infinite;
+  }
+
+  @keyframes spin {
+   from {
+    transform: rotate(0deg);
+   }
+
+   to {
+    transform: rotate(360deg);
+   }
+  }
+
+  .scratch-effect {
+   background: linear-gradient(45deg, #FFD93D, #FFA500);
+  }
+
+  .tap-effect {
+   transition: transform 0.1s;
+  }
+
+  .tap-effect:active {
+   transform: scale(0.95);
+  }
+
+
+
+
+  /* Custom scrollbar for main element */
+  html::-webkit-scrollbar {
+   width: 10px;
+  }
+
+  html::-webkit-scrollbar-track {
+   background: #f1f1f1;
+   border-radius: 5px;
+  }
+
+  html::-webkit-scrollbar-thumb {
+   background: linear-gradient(to bottom, #8B5CF6, #6366F1);
+   border-radius: 5px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+   background: linear-gradient(to bottom, #7C3AED, #4F46E5);
+  }
+
+  /* For Firefox */
+  html {
+   scrollbar-width: thin;
+   scrollbar-color: #6366F1 #f1f1f1;
+  }
+
+
+ </style>
+
+
+
+
+
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Header -->
+<header class="fixed top-0 w-full z-50 bg-white border-b border-gray-100" style="height: auto; padding-top: 40px;">
+  <div class="flex flex-col h-full px-4 py-2 justify-between">
+
+    <!-- Top Row: Bot Name + Verified -->
+    <div class="flex items-center justify-center border-b border-gray-100">
+      <p class="font-bold text-gray-800 text-xl truncate py-2 max-w-[300px]">
+        TZSMM MINI APP V1
+      </p>
+      <i class="ri-verified-badge-fill text-blue-500 text-lg ml-1"></i>
+    </div>
+
+    <div class="flex items-center justify-between py-1">
+
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-white card-shadow">
+         // --- User & Profile ---
+
+    function loadTelegramUser() {
+
+        if (tgUser) {
+
+            document.getElementById('username').textContent = tgUser.first_name || 'Telegram User';
+
+            const profilePicDiv = document.getElementById('profile-pic');
+
+            if (tgUser.photo_url) {
+
+                profilePicDiv.innerHTML = `<img src="${tgUser.photo_url}" alt="P">`;
+
+            } else {
+
+                profilePicDiv.textContent = (tgUser.first_name || 'U').charAt(0);
+
+            }
+
+        }
+
+    }
+
+      <!-- Right: Balance -->
+      <div class="text-right">
+        <div class="flex items-center justify-end space-x-1 text-sm font-semibold text-gray-800">
+          <i class="ri-money-dollar-circle-line text-green-500"></i>
+          <span>0.0</span>
+          <span class="text-xs text-gray-500">BDT</span>
+        </div>
+        <div class="flex items-center justify-end space-x-1 text-xs text-gray-600">
+          <i class="ri-coin-line text-yellow-500"></i>
+          <span>0</span>
+          <span class="text-[10px] text-gray-500">BTTC</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+  <main class="px-4" style="padding-top: 170px; padding-bottom: 150px;">
+
+    <!-- Referral Header -->
+    <section class="bg-white rounded-sm shadow-md p-4 mb-6">
+      <div class="text-center">
+        <div
+          class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-sm shadow-xl p-6 relative overflow-hidden">
+          <div class="absolute -bottom-8 -right-8 opacity-20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-32 h-32" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M12 6v6h4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 class="text-2xl font-extrabold mb-2">Refer & Earn 💸</h1>
+          <p class="text-sm opacity-90">
+            Invite your friends and earn <span class="font-bold">11%</span> commission on
+            every successful referral.
+          </p>
+        </div>
+
+        <!-- Referral Link -->
+        <div class="mt-6 bg-white rounded-sm shadow-md border border-gray-200 p-5 text-center">
+          <p class="text-gray-700 text-sm mb-3">Your unique referral link</p>
+          <div class="flex items-center justify-between bg-gray-100 rounded-lg px-3 py-2">
+            <span id="refLink" class="text-sm text-gray-600 truncate">
+              https://t.me/adsfdghbot?startapp=7794535320
+            </span>
+            <button onclick="copyReferral()"
+              class="ml-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-lg">
+              Copy
+            </button>
+          </div>
+
+          <!-- Social Share -->
+          <div class="flex flex-col items-center mt-4 space-y-2">
+
+            <div class="flex justify-center gap-3 mt-2 flex-wrap">
+              <a href="https://wa.me/?text=Join%20with%20me%20and%20start%20earning%20money%20doing%20simple%20tasks%20like%20watching%20ads,%20playing%20games,%20and%20invite%20your%20friends%20to%20earn%2011%25%20lifetime%20https://t.me/adsfdghbot?startapp=7794535320"
+                target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm shadow">
+                WhatsApp
+              </a>
+              <a href="https://t.me/share/url?url=https://t.me/adsfdghbot?startapp=7794535320&text=Join%20with%20me%20and%20start%20earning%20money%20doing%20simple%20tasks%20like%20watching%20ads,%20playing%20games,%20and%20invite%20your%20friends%20to%20earn%2011%25%20lifetime"
+                target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white px-3 py-2 rounded-lg text-sm shadow">
+                Telegram
+              </a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u=https://t.me/adsfdghbot?startapp=7794535320&quote=Join%20with%20me%20and%20start%20earning%20money%20doing%20simple%20tasks%20like%20watching%20ads,%20playing%20games,%20and%20invite%20your%20friends%20to%20earn%2011%25%20lifetime"
+                target="_blank" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-2 rounded-lg text-sm shadow">
+                Facebook
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+        <div class="mt-8 text-left">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">🚀 How it Works</h2>
+          <div class="space-y-4">
+            <div class="flex items-start gap-3" style="    align-items: center;">
+              <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold">1
+              </div>
+              <p class="text-gray-700 text-sm">Share your referral link with your friends.</p>
+            </div>
+            <div class="flex items-start gap-3" style="    align-items: center;">
+              <div class="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold">2
+              </div>
+              <p class="text-gray-700 text-sm">Your friend signs up using your link.</p>
+            </div>
+            <div class="flex items-start gap-3" style="    align-items: center;">
+              <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold">3
+              </div>
+              <p class="text-gray-700 text-sm">You earn <span
+                  class="font-semibold text-green-600">11% commission</span> from
+                their earnings.</p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Overall Stats -->
+        <div class="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
+
+          <!-- Today Coins -->
+          <div
+            class="p-4 rounded-xl shadow-md bg-yellow-100 border-l-4 border-yellow-400 flex flex-col items-center justify-center hover:shadow-xl transition">
+            <div class="text-yellow-700 text-xs font-semibold uppercase">Today BTTC</div>
+            <div class="text-xl font-bold text-yellow-600 mt-2">0
+              BTTC</div>
+            <div class="mt-1 text-yellow-500 text-xs">Coins earned today</div>
+          </div>
+
+          <!-- Today Currency -->
+          <div
+            class="p-4 rounded-xl shadow-md bg-green-100 border-l-4 border-green-400 flex flex-col items-center justify-center hover:shadow-xl transition">
+            <div class="text-green-700 text-xs font-semibold uppercase">Today BDT</div>
+            <div class="text-xl font-bold text-green-600 mt-2">
+              0.0 BDT</div>
+            <div class="mt-1 text-green-500 text-xs">Currency earned today</div>
+          </div>
+
+          <!-- Lifetime Coins -->
+          <div
+            class="p-4 rounded-xl shadow-md bg-blue-100 border-l-4 border-blue-400 flex flex-col items-center justify-center hover:shadow-xl transition">
+            <div class="text-blue-700 text-xs font-semibold uppercase">Lifetime BTTC</div>
+            <div class="text-xl font-bold text-blue-600 mt-2">0 BTTC</div>
+            <div class="mt-1 text-blue-500 text-xs">Total coins earned</div>
+          </div>
+
+          <!-- Lifetime Currency -->
+          <div
+            class="p-4 rounded-xl shadow-md bg-indigo-100 border-l-4 border-indigo-400 flex flex-col items-center justify-center hover:shadow-xl transition">
+            <div class="text-indigo-700 text-xs font-semibold uppercase">Lifetime BDT</div>
+            <div class="text-xl font-bold text-indigo-600 mt-2">0.0 BDT</div>
+            <div class="mt-1 text-indigo-500 text-xs">Total currency earned</div>
+          </div>
+
+        </div>
+
+
+
+        <!-- Weekly Chart -->
+        <div class="mt-8">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">📊 This Week’s Earnings</h2>
+          <canvas id="weeklyChart" height="200"></canvas>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Navigation -->
+<nav class="fixed bottom-0 w-full z-50">
+    <div class="mx-0 mb-0">
+        <div class="glass-effect rounded-sm border border-white/20 card-shadow">
+            <div class="grid grid-cols-5 py-2">
+
+                <!-- Home -->
+                <a onClick="showLoading(true);"
+                    href="https://tzsmm-mini-app-v1.tzsmm.com?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf"
+                    class="nav-tab flex flex-col items-center py-2 cursor-pointer ">
+                    <div class="w-6 h-6 flex items-center justify-center mb-1">
+                        <i
+                            class="ri-home-4-line text-gray-500"></i>
+                    </div>
+                    <span
+                        class="text-xs font-medium text-gray-500">Home</span>
+                </a>
+
+                <!-- Earn -->
+                <a onClick="showLoading(true);"
+                    href="https://tzsmm-mini-app-v1.tzsmm.com/earn?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf"
+                    class="nav-tab flex flex-col items-center py-2 cursor-pointer ">
+                    <div class="w-6 h-6 flex items-center justify-center mb-1">
+                        <i
+                            class="ri-money-dollar-circle-line text-gray-500"></i>
+                    </div>
+                    <span
+                        class="text-xs font-medium text-gray-500">Earn</span>
+                </a>
+
+                <!-- Wallet -->
+                <a onClick="showLoading(true);"
+                    href="https://tzsmm-mini-app-v1.tzsmm.com/wallet?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf"
+                    class="nav-tab flex flex-col items-center py-2 cursor-pointer ">
+                    <div class="w-6 h-6 flex items-center justify-center mb-1">
+                        <i
+                            class="ri-wallet-3-line text-gray-500"></i>
+                    </div>
+                    <span
+                        class="text-xs font-medium text-gray-500">Wallet</span>
+                </a>
+
+
+                <!-- Refer -->
+                <a onClick="showLoading(true);"
+                    href="https://tzsmm-mini-app-v1.tzsmm.com/refer?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf"
+                    class="nav-tab flex flex-col items-center py-2 cursor-pointer active">
+                    <div class="w-6 h-6 flex items-center justify-center mb-1">
+                        <i
+                            class="ri-gift-fill text-primary"></i>
+
+                    </div>
+                    <span
+                        class="text-xs font-medium text-primary">
+                        Refer
+                    </span>
+                </a>
+
+
+
+
+                <!-- Withdraw -->
+                
+                <!-- Profile -->
+                <a onClick="showLoading(true);"
+                    href="https://tzsmm-mini-app-v1.tzsmm.com/profile?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf"
+                    class="nav-tab flex flex-col items-center py-2 cursor-pointer ">
+                    <div class="w-6 h-6 flex items-center justify-center mb-1">
+                        <i
+                            class="ri-user-3-line text-gray-500"></i>
+                    </div>
+                    <span
+                        class="text-xs font-medium text-gray-500">Profile</span>
+                </a>
+
+            </div>
+        </div>
+    </div>
+</nav>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.BackButton.show();
+        tg.BackButton.onClick(function () {
+            showLoading(true);
+            window.location.href = "https://tzsmm-mini-app-v1.tzsmm.com?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf";
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+<!-- Fullscreen Loading Overlay -->
+<div id="loadingOverlay"
+    class="hidden fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="flex flex-col items-center space-y-4">
+        <!-- Spinner -->
+        <div class="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+        <!-- Text -->
+        <p class="text-white text-lg font-semibold">Loading...</p>
+    </div>
+</div>
+<script>
+    function showLoading(show) {
+        const overlay = document.getElementById("loadingOverlay");
+        if (show) {
+            overlay.classList.remove("hidden");
+        } else {
+            overlay.classList.add("hidden");
+        }
+    }
+</script>  <!-- Modal -->
+<div id="adModal_container" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-2xl w-11/12 max-w-md p-6 relative animate-fadeIn_adModal">
+
+        <!-- Close Button -->
+        <button id="adModal_closeBtn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold">
+            ✕
+        </button>
+
+        <!-- Title -->
+        <h2 class="text-lg font-bold text-gray-800 text-center mb-6">Select Ad Type</h2>
+
+        <!-- Options -->
+        <div id="adModal_optionList" class="grid grid-cols-2 gap-4">
+                            <a onclick="showLoading(true);"
+                    href="https://tzsmm-mini-app-v1.tzsmm.com/task/gigapub?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf"
+                    class="adModal_optionCard p-4 border rounded-xl cursor-pointer text-center transition hover:shadow-md block">
+                    <img src="https://partner.giga.pub/favicon.ico" alt="GigaPub"
+                        class="w-12 h-12 mx-auto mb-2 rounded-lg" />
+                    <p class="font-semibold text-sm text-gray-800">GigaPub</p>
+                </a>
+                            <a onclick="showLoading(true);"
+                    href="https://tzsmm-mini-app-v1.tzsmm.com/task/gigapub2?initData=user%3D%257B%2522id%2522%253A7794535320%252C%2522first_name%2522%253A%2522%25F0%259F%2591%2591%25F0%259D%2590%25A7%25D1%2591%25C5%25A3%25F0%259D%259A%2591%25C2%25AAc%25F0%259D%2593%25B4%25D1%2591%25F0%259D%2592%2593%25E2%2595%2591%25E2%2596%258C%25F0%259F%2592%2595%25E2%259C%25BF%2520%25E2%2596%25AA%25EF%25B8%258F%25F0%259F%2590%25BE%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522itsmyproffession%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FcDzsoH_zM758EgJe1fjLlBdVU9PvSo4ezdP8iXGlp8twlIAAneWOErNwE-E4Aw-T.svg%2522%257D%26chat_instance%3D-964550209058580506%26chat_type%3Dchannel%26start_param%3D5702521445%26auth_date%3D1757155267%26signature%3DNL2SoZqr5Bo_bptgflu_6K3_bWhz2143LLr8yLP0WyEgg0kU8P8w75pWj-_8bIe2TrFh1e7Exwry6iQ9dakDDA%26hash%3D4e76b599312accf35b9d46606ceb22542eb795bcf1a6b21ca2c44ab0d1ff4aaf"
+                    class="adModal_optionCard p-4 border rounded-xl cursor-pointer text-center transition hover:shadow-md block">
+                    <img src="https://partner.giga.pub/favicon.ico" alt="GigaPub 2"
+                        class="w-12 h-12 mx-auto mb-2 rounded-lg" />
+                    <p class="font-semibold text-sm text-gray-800">GigaPub 2</p>
+                </a>
+                    </div>
+
+        <!-- Continue Button (optional use) -->
+        <div class="text-center mt-6">
+            <button id="adModal_continueBtn"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow opacity-50 cursor-not-allowed hidden"
+                disabled>
+                Continue
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Animations -->
+<style>
+    @keyframes fadeIn_adModal {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .animate-fadeIn_adModal {
+        animation: fadeIn_adModal 0.3s ease-out;
+    }
+
+    .adModal_optionCard.active {
+        border: 2px solid #2563eb;
+        background-color: #f0f7ff;
+    }
+</style>
+
+<!-- JS for Modal -->
+<script>
+    const adModal_container = document.getElementById("adModal_container");
+    const adModal_openBtn = document.getElementById("watchNowBtn"); // external button
+    const adModal_closeBtn = document.getElementById("adModal_closeBtn");
+    const adModal_continueBtn = document.getElementById("adModal_continueBtn");
+    const adModal_optionCards = document.querySelectorAll(".adModal_optionCard");
+    let adModal_selectedOption = null;
+
+    // Open modal
+    if (adModal_openBtn) {
+        adModal_openBtn.addEventListener("click", () => {
+            adModal_container.classList.remove("hidden");
+        });
+    }
+
+    function showAdsModal() {
+        adModal_container.classList.remove("hidden");
+    }
+
+    // Close modal
+    adModal_closeBtn.addEventListener("click", () => {
+        adModal_container.classList.add("hidden");
+        adModal_resetSelection();
+    });
+
+    // Close if clicked outside modal content
+    adModal_container.addEventListener("click", (e) => {
+        if (e.target === adModal_container) {
+            adModal_container.classList.add("hidden");
+            adModal_resetSelection();
+        }
+    });
+
+    // Handle option selection
+    adModal_optionCards.forEach(card => {
+        card.addEventListener("click", () => {
+            adModal_optionCards.forEach(c => c.classList.remove("active"));
+            card.classList.add("active");
+            adModal_selectedOption = card.querySelector("p.font-semibold").textContent;
+            adModal_continueBtn.disabled = false;
+            adModal_continueBtn.classList.remove("opacity-50", "cursor-not-allowed");
+        });
+    });
+
+    // Continue button
+    adModal_continueBtn.addEventListener("click", () => {
+        if (adModal_selectedOption) {
+            alert("Selected: " + adModal_selectedOption + " (Giga Pub logic goes here)");
+            adModal_container.classList.add("hidden");
+            adModal_resetSelection();
+        }
+    });
+
+    function adModal_resetSelection() {
+        adModal_optionCards.forEach(c => c.classList.remove("active"));
+        adModal_selectedOption = null;
+        adModal_continueBtn.disabled = true;
+        adModal_continueBtn.classList.add("opacity-50", "cursor-not-allowed");
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div id="appModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-xl p-6 mx-4 max-w-sm w-full">
+        <div class="text-center">
+            <div id="modalIconWrapper" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i id="modalIcon" class="ri-information-line ri-2x"></i>
+            </div>
+            <h3 id="modalTitle" class="text-lg font-semibold text-gray-800 mb-2">Info</h3>
+            <p id="modalMessage" class="text-sm text-gray-600 mb-4">This is an info message.</p>
+            <button id="closeModal" class="w-full bg-primary text-white py-2 rounded !rounded-button cursor-pointer">
+                Continue
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("appModal");
+        const closeModalBtn = document.getElementById("closeModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalMessage = document.getElementById("modalMessage");
+        const modalIcon = document.getElementById("modalIcon");
+        const modalIconWrapper = document.getElementById("modalIconWrapper");
+
+        function showModal(type, title, message) {
+            modalIconWrapper.className = "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4";
+            modalIcon.className = "ri-2x";
+
+            if (type === "success") {
+                modalIconWrapper.classList.add("bg-green-100");
+                modalIcon.classList.add("ri-check-line", "text-green-600");
+                modalTitle.textContent = title || "Success!";
+            } else if (type === "error") {
+                modalIconWrapper.classList.add("bg-red-100");
+                modalIcon.classList.add("ri-close-line", "text-red-600");
+                modalTitle.textContent = title || "Error!";
+            } else if (type === "info") {
+                modalIconWrapper.classList.add("bg-blue-100");
+                modalIcon.classList.add("ri-information-line", "text-blue-600");
+                modalTitle.textContent = title || "Info";
+            }
+
+            modalMessage.textContent = message || "";
+            modal.classList.remove("hidden");
+        }
+
+        window.showSuccessModal = (msg) => showModal("success", "Success!", msg);
+        window.showErrorModal = (msg) => showModal("error", "Error!", msg);
+        window.showInfoModal = (msg) => showModal("info", "Info", msg);
+
+        closeModalBtn.addEventListener("click", () => modal.classList.add("hidden"));
+        modal.addEventListener("click", (e) => { if (e.target === modal) modal.classList.add("hidden"); });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        
+        
+                });
+</script>  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    function copyReferral() {
+      const link = document.getElementById("refLink").innerText;
+      navigator.clipboard.writeText(link);
+      showSuccessModal("Referral link copied ✅");
+    }
+
+    const weeklyLabels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    const coinsData = [0,0,0,0,0,0,0];
+    const currencyData = [0,0,0,0,0,0,0];
+
+    console.log('Weekly Labels:', weeklyLabels);
+    console.log('Coins Data:', coinsData);
+    console.log('Currency Data:', currencyData);
+
+    const ctx = document.getElementById('weeklyChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: weeklyLabels,
+        datasets: [
+          {
+            label: 'BTTC',
+            data: coinsData,
+            backgroundColor: 'rgba(252, 211, 77, 0.7)',
+            borderRadius: 5
+          },
+          {
+            label: 'BDT',
+            data: currencyData,
+            backgroundColor: 'rgba(34, 197, 94, 0.7)',
+            borderRadius: 5
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: ctx => ctx.raw + (ctx.dataset.label.includes('Coins') ? ' 🪙' : ' 💰')
+            }
+          }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>
