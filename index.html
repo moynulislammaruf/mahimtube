@@ -42,4 +42,124 @@
   button {
     padding: 10px 15px;
     font-size: 1em;
-    border: 2px solid
+    border: 2px solid #2e7d32;
+    background-color: #2e7d32;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #27632a;
+  }
+  .videos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 600px) {
+    .videos {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+  .video-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(46,125,50,0.2);
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .video-card img {
+    width: 100%;
+    display: block;
+  }
+  .video-info {
+    padding: 8px;
+    font-size: 0.9em;
+    color: #1b5e20;
+  }
+  #player {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 15px;
+  }
+</style>
+</head>
+<body>
+
+<header>Mahim Tube</header>
+
+<main>
+  <div class="search-bar">
+    <input type="search" id="searchInput" placeholder="ভিডিও সার্চ করুন..." />
+    <button id="searchBtn">সার্চ</button>
+  </div>
+  <div id="player"></div>
+  <div class="videos" id="videoList"></div>
+</main>
+
+<script>
+  // YouTube API Key (আপনার API key এখানে দিন)
+  const API_KEY = 'YOUR_YOUTUBE_API_KEY';
+
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const videoList = document.getElementById('videoList');
+  const playerDiv = document.getElementById('player');
+
+  searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    if (query) {
+      searchVideos(query);
+    }
+  });
+
+  function searchVideos(query) {
+    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&q=${encodeURIComponent(query)}&key=${API_KEY}`)
+      .then(response => response.json())
+      .then(data => {
+        displayVideos(data.items);
+      })
+      .catch(err => {
+        console.error('Error fetching videos', err);
+      });
+  }
+
+  function displayVideos(videos) {
+    videoList.innerHTML = '';
+    playerDiv.innerHTML = '';
+    if (!videos || videos.length === 0) {
+      videoList.innerHTML = '<p>কোন ভিডিও পাওয়া যায়নি।</p>';
+      return;
+    }
+    videos.forEach(video => {
+      const videoId = video.id.videoId;
+      const title = video.snippet.title;
+      const thumbnail = video.snippet.thumbnails.medium.url;
+
+      const videoCard = document.createElement('div');
+      videoCard.className = 'video-card';
+      videoCard.innerHTML = `
+        <img src="${thumbnail}" alt="${title}" />
+        <div class="video-info">${title}</div>
+      `;
+      videoCard.addEventListener('click', () => {
+        playVideo(videoId);
+      });
+      videoList.appendChild(videoCard);
+    });
+  }
+
+  function playVideo(videoId) {
+    playerDiv.innerHTML = `
+      <iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    `;
+    // Scroll to player when video is played
+    playerDiv.scrollIntoView({behavior: 'smooth'});
+  }
+
+  // Optional: search a default term on load
+  searchVideos('বাংলা গান');
+</script>
+
+</body>
+</html>
