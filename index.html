@@ -1,209 +1,34 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mahim Tube</title>
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #e8f5e9;
-    color: #2e7d32;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  header {
-    background-color: #2e7d32;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-  }
-  main {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-  }
-  .search-bar {
-    display: flex;
-    margin-bottom: 15px;
-  }
-  input[type="search"] {
-    flex: 1;
-    padding: 10px;
-    font-size: 1em;
-    border: 2px solid #2e7d32;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-  }
-  button {
-    padding: 10px 15px;
-    font-size: 1em;
-    border: 2px solid #2e7d32;
-    background-color: #2e7d32;
-    color: white;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #27632a;
-  }
-  .videos {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  @media (min-width: 600px) {
-    .videos {
-      grid-template-columns: 1fr 1fr 1fr;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MicroCashBD Admin Pro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Hind Siliguri', sans-serif;
+      background-color: #f8fafc;
     }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "firebase/": "https://esm.sh/firebase@^12.8.0/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "sweetalert2": "https://esm.sh/sweetalert2@^11.26.17"
   }
-  .video-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(46,125,50,0.2);
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .video-card img {
-    width: 100%;
-    display: block;
-  }
-  .video-info {
-    padding: 8px;
-    font-size: 0.9em;
-    color: #1b5e20;
-  }
-  #player {
-    width: 100%;
-    height: 200px;
-    margin-bottom: 15px;
-  }
-</style>
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body>
-
-<header>
-  <div class="header-left">M2K IS BACK</div>
-  <div class="header-right">
-    <img src="https://imgur.com/a/FrBZql5" alt=/>
-  </div>
-</header>
-
-
-<main>
-  <div class="search-bar">
-    <input type="search" id="searchInput" placeholder="ভিডিও সার্চ করুন..." />
-    <button id="searchBtn">সার্চ</button>
-  </div>
-  <div id="player"></div>
-  <div class="videos" id="videoList"></div>
-</main>
-
-<script>
-  // YouTube API Key (আপনার API key এখানে দিন)
-  const API_KEY = 'AIzaSyBwNQpFgWUcO4mL1kDc9TtpifYYa3xvg48';
-
-  const searchInput = document.getElementById('searchInput');
-  const searchBtn = document.getElementById('searchBtn');
-  const videoList = document.getElementById('videoList');
-  const playerDiv = document.getElementById('player');
-
-  searchBtn.addEventListener('click', () => {
-    const query = searchInput.value.trim();
-    if (query) {
-      searchVideos(query);
-    }
-  });
-
-  function searchVideos(query) {
-    fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=12&q=${encodeURIComponent(query)}&key=${API_KEY}`)
-      .then(response => response.json())
-      .then(data => {
-        displayVideos(data.items);
-      })
-      .catch(err => {
-        console.error('Error fetching videos', err);
-      });
-  }
-
-  function displayVideos(videos) {
-    videoList.innerHTML = '';
-    playerDiv.innerHTML = '';
-    if (!videos || videos.length === 0) {
-      videoList.innerHTML = '<p>কোন ভিডিও পাওয়া যায়নি।</p>';
-      return;
-    }
-    videos.forEach(video => {
-      const videoId = video.id.videoId;
-      const title = video.snippet.title;
-      const thumbnail = video.snippet.thumbnails.medium.url;
-
-      const videoCard = document.createElement('div');
-      videoCard.className = 'video-card';
-      videoCard.innerHTML = `
-        <img src="${thumbnail}" alt="${title}" />
-        <div class="video-info">${title}</div>
-      `;
-      videoCard.addEventListener('click', () => {
-        playVideo(videoId);
-      });
-      videoList.appendChild(videoCard);
-    });
-  }
- // --- Initialize Automatic Ads ---
-
-    function initializeInAppAds() {
-
-        if (typeof show_9606399 === 'function') {
-
-            // In-App Interstitial - runs automatically in the background
-
-            show_9606399({
-
-              type: 'inApp',
-
-              inAppSettings: {
-
-                frequency: 2,
-
-                capping: 0.1,
-
-                interval: 30,
-
-                timeout: 5,
-
-                everyPage: false // `false` is important for single-page apps like this
-
-              }
-
-            });
-
-            console.log("Automatic In-App Interstitial Ads Initialized.");
-
-        } else {
-
-            console.warn("Monetag SDK not ready for In-App Ads. Retrying...");
-
-            setTimeout(initializeInAppAds, 2000); // Retry after 2 seconds if SDK is not loaded yet
-
-        }
-
-    }
-  function playVideo(videoId) {
-    playerDiv.innerHTML = `
-      <iframe width="100%" height="200" src="https://www.youtube.com/embed/${videoId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    `;
-    // Scroll to player when video is played
-    playerDiv.scrollIntoView({behavior: 'smooth'});
-  }
-
-  // Optional: search a default term on load
-  searchVideos('বাংলা গান');
-</script>
-
+  <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>
